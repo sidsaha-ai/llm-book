@@ -4,6 +4,7 @@ Implements a Layer Normalization class.
 import torch
 import torch.nn as nn
 
+
 class LayerNorm(nn.Module):
     """
     Implements a Layer Normalization module.

@@ -1,12 +1,12 @@
 """
 This implements the GPT model.
 """
+import tiktoken
 import torch
 import torch.nn as nn
-import tiktoken
-
-from transformer import TransformerBlock
 from layer_norm import LayerNorm
+from transformer import TransformerBlock
+
 
 class GPTModel(nn.Module):
     """
