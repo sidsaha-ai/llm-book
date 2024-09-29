@@ -2,9 +2,8 @@
 This is for playing with shortcut connections.
 """
 import torch
-from torch import nn
-
 from gelu import GELU
+from torch import nn
 
 
 class ShortcutNN(nn.Module):
@@ -13,19 +12,18 @@ class ShortcutNN(nn.Module):
     """
     def __init__(self, layer_sizes: tuple[int, int], shortcut: bool = False) -> None:
         super().__init__()
-        
+
         self.layer_sizes: tuple[int, int] = layer_sizes
         self.shortcut: bool = shortcut
 
         self.module_list = nn.ModuleList([
             nn.Sequential(
-                nn.Linear(l[0], l[1]),
+                nn.Linear(lyr[0], lyr[1]),
                 GELU(),
             )
-            for l in self.layer_sizes
+            for lyr in self.layer_sizes
         ])
 
-    
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Implements the forward pass.
@@ -34,13 +32,14 @@ class ShortcutNN(nn.Module):
             output = m(x)
             x = x + output if self.shortcut and x.shape == output.shape else output
         return x
-    
+
+
 def print_gradients(model, inputs, targets):
     """
     Creates a NN without shortcut, does a forward and a backward pass, and prints gradients.
     """
     outputs = model(inputs)
-    
+
     loss = nn.MSELoss()
     loss = loss(outputs, targets)
     loss.backward()
@@ -65,7 +64,7 @@ def main():
     inputs = torch.tensor(inputs, dtype=torch.float)
     targets = [0]
     targets = torch.tensor(targets, dtype=torch.float)
-    
+
     shortcut = False
     model = ShortcutNN(layer_sizes, shortcut)
     print('=== Without shortcut connections ===')
@@ -75,7 +74,6 @@ def main():
     model = ShortcutNN(layer_sizes, shortcut)
     print('=== With shortcut connections === ')
     print_gradients(model, inputs, targets)
-
 
 
 if __name__ == '__main__':
