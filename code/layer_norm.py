@@ -51,5 +51,6 @@ def main():
     print(mean)
     print(var)
 
+
 if __name__ == '__main__':
     main()

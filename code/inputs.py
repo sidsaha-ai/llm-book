@@ -29,6 +29,7 @@ class BatchGenerator:
 
         return batch
 
+
 def main():
     """
     Main method to try out.
