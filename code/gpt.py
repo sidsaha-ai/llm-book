@@ -85,6 +85,12 @@ def main():
     print(outputs)
     print(f'{batch.shape=}, {outputs.shape=}')
 
+    num_params = sum(p.numel() for p in model.parameters())
+    print(f'Number of parameters in the model: {num_params:,}')
+
+    size_mb = (num_params * 4) / (1024 * 1024)
+    print(f'Size of the model: {size_mb:.2f}MB')
+
 
 if __name__ == '__main__':
     main()
