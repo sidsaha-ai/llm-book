@@ -40,7 +40,7 @@ class GPTModel(nn.Module):
             *[TransformerBlock() for _ in range(self.num_layers)],
         )
         # final layer norm
-        self.layer_norm = LayerNorm()
+        self.layer_norm = LayerNorm(self.emb_dim)
         # output layer
         self.out_head = nn.Linear(self.emb_dim, self.vocab_size, bias=False)
     
