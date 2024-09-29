@@ -2,9 +2,8 @@
 Implements a Layer Normalization class.
 """
 import torch
-from torch import nn
-
 from inputs import BatchGenerator
+from torch import nn
 
 
 class LayerNorm(nn.Module):

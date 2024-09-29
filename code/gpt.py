@@ -3,10 +3,10 @@ This implements the GPT model.
 """
 import tiktoken
 import torch
-from torch import nn
-from layer_norm import LayerNorm
-from transformer import TransformerBlock
 from inputs import BatchGenerator
+from layer_norm import LayerNorm
+from torch import nn
+from transformer import TransformerBlock
 
 
 class GPTModel(nn.Module):

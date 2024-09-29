@@ -4,6 +4,7 @@ This creates a sample input that we will use during development.
 import tiktoken
 import torch
 
+
 class BatchGenerator:
     """
     Generatates a batch of input for development purpose.
