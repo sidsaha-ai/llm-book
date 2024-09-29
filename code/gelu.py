@@ -12,7 +12,7 @@ class GELU(nn.Module):
     """
     def __init__(self) -> None:
         super().__init__()
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Implements the forward pass.
@@ -37,7 +37,9 @@ def main():
         inputs = torch.tensor(c, dtype=torch.float)
 
         gelu = GELU()
-        print(f'My GELU: {gelu(inputs)}, PyTorch GELU: {nn.functional.gelu(inputs)}')
+        torch_gelu = nn.GELU()
+        print(f'My GELU: {gelu(inputs)}, PyTorch GELU: {torch_gelu(inputs)}')
+
 
 def plot_gelu_and_relu():
     """
