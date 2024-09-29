@@ -47,6 +47,7 @@ class TransformerBlock(nn.Module):
 
         return x
 
+
 def main():
     """
     Try out the transformer block.
@@ -70,6 +71,7 @@ def main():
 
     print(outputs)
     print(f'{inputs.shape=}, {outputs.shape=}')
+
 
 if __name__ == '__main__':
     main()

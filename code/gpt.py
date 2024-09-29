@@ -21,6 +21,7 @@ class GPTModel(nn.Module):
             context_len: int,
             drop_rate: float,
             num_layers: int,
+            num_heads: int,
     ) -> None:
         super().__init__()
 
@@ -38,7 +39,11 @@ class GPTModel(nn.Module):
         self.dropout = nn.Dropout(self.drop_rate)
         # transformer blocks
         self.transformer_blocks = nn.Sequential(
-            *[TransformerBlock() for _ in range(self.num_layers)],
+            *[TransformerBlock(
+                emb_dim=emb_dim,
+                num_heads=num_heads,
+                dropout_percent=drop_rate,
+            ) for _ in range(self.num_layers)],
         )
         # final layer norm
         self.layer_norm = LayerNorm(self.emb_dim)
@@ -75,6 +80,7 @@ def main():
         context_len=1024,
         drop_rate=0.1,
         num_layers=12,
+        num_heads=12,
     )
 
     output = model(batch)
