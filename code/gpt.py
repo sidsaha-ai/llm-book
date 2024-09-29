@@ -6,6 +6,7 @@ import torch
 from torch import nn
 from layer_norm import LayerNorm
 from transformer import TransformerBlock
+from inputs import BatchGenerator
 
 
 class GPTModel(nn.Module):
@@ -66,6 +67,7 @@ def main():
     Main function to try the GPT block.
     """
     tokenizer = tiktoken.get_encoding('gpt2')
+    batch = BatchGenerator.generate()
 
     model = GPTModel(
         vocab_size=tokenizer.n_vocab,
@@ -74,17 +76,6 @@ def main():
         drop_rate=0.1,
         num_layers=12,
     )
-
-    # make inputs
-    t1: str = 'Every effort moves a'
-    t2: str = 'Every day holds a'
-    t3: str = 'Every man speaks up'
-    inputs = [
-        torch.tensor(tokenizer.encode(t1)),
-        torch.tensor(tokenizer.encode(t2)),
-        torch.tensor(tokenizer.encode(t3)),
-    ]
-    batch: torch.Tensor = torch.stack(tuple(inputs), dim=0)
 
     output = model(batch)
     print(output)
