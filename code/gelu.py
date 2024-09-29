@@ -2,8 +2,9 @@
 This implements a GELU layer from scratch.
 """
 import torch
-from torch import nn
 from matplotlib import pyplot as plt
+from torch import nn
+
 
 class GELU(nn.Module):
     """
