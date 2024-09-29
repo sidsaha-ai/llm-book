@@ -2,16 +2,25 @@
 This initializes GPT models of various sizes to find the number of parameters and memory size.
 """
 
-from gpt import GPTModel
 from dataclasses import dataclass
+
+from gpt import GPTModel
+
 
 @dataclass
 class ModelParams:
+    """
+    Represents the parameters of a GPT model.
+    """
     emb_dim: int
     num_layers: int
     num_heads: int
 
+
 def main():
+    """
+    The main function that finds the number of parameters and size of differernt models.
+    """
     vocab_size: int = 50257
     context_len: int = 1024
     drop_rate: float = 0.1
