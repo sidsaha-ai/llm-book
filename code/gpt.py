@@ -87,6 +87,7 @@ def main():
 
     output = model(batch)
     print(output)
+    print(f'{output.shape=}')
 
 
 if __name__ == '__main__':
