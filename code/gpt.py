@@ -83,9 +83,9 @@ def main():
         num_heads=12,
     )
 
-    output = model(batch)
-    print(output)
-    print(f'{output.shape=}')
+    outputs = model(batch)
+    print(outputs)
+    print(f'{batch.shape=}, {outputs.shape=}')
 
 
 if __name__ == '__main__':
