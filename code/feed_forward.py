@@ -20,7 +20,7 @@ class FeedForward(nn.Module):
             GELU(),
             nn.Linear(4 * self.emb_dim, emb_dim),
         )
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Implements the forward pass.
