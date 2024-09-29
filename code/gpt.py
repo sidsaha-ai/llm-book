@@ -3,7 +3,7 @@ This implements the GPT model.
 """
 import tiktoken
 import torch
-import torch.nn as nn
+from torch import nn
 from layer_norm import LayerNorm
 from transformer import TransformerBlock
 
@@ -12,7 +12,7 @@ class GPTModel(nn.Module):
     """
     This is the GPT model.
     """
-    def __init__(
+    def __init__(  # pylint: disable=too-many-arguments
             self,
             *,
             vocab_size: int,
@@ -43,7 +43,7 @@ class GPTModel(nn.Module):
         self.layer_norm = LayerNorm(self.emb_dim)
         # output layer
         self.out_head = nn.Linear(self.emb_dim, self.vocab_size, bias=False)
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Implements the forward pass.
@@ -56,9 +56,10 @@ class GPTModel(nn.Module):
         x = self.dropout(x)
         x = self.transformer_blocks(x)
         x = self.layer_norm(x)
-        
+
         logits = self.out_head(x)
         return logits
+
 
 def main():
     """
@@ -73,7 +74,7 @@ def main():
         drop_rate=0.1,
         num_layers=12,
     )
-    
+
     # make inputs
     t1: str = 'Every effort moves a'
     t2: str = 'Every day holds a'

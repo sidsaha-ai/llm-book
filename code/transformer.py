@@ -2,7 +2,7 @@
 This implements the transformer block.
 """
 import torch
-import torch.nn as nn
+from torch import nn
 
 
 class TransformerBlock(nn.Module):
@@ -11,7 +11,7 @@ class TransformerBlock(nn.Module):
     """
     def __init__(self) -> None:
         super().__init__()
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Implements the forward pass.

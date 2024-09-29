@@ -2,7 +2,7 @@
 Implements a Layer Normalization class.
 """
 import torch
-import torch.nn as nn
+from torch import nn
 
 
 class LayerNorm(nn.Module):
@@ -11,13 +11,13 @@ class LayerNorm(nn.Module):
     """
     def __init__(self, emb_dim: int) -> None:
         super().__init__()
-        
+
         self.emb_dim: int = emb_dim
         self.eps: float = 1e-5
-        
+
         self.scale = nn.Parameter(torch.ones(emb_dim))
         self.shift = nn.Parameter(torch.zeros(emb_dim))
-    
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Implements the forward pass.
