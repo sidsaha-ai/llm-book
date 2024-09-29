@@ -2,9 +2,8 @@
 This implements the feed-forward module that will be used in the LLM.
 """
 import torch
-from torch import nn
-
 from gelu import GELU
+from torch import nn
 
 
 class FeedForward(nn.Module):
