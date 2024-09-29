@@ -35,8 +35,6 @@ class GPTModel(nn.Module):
         self.tok_emb = nn.Embedding(self.vocab_size, self.emb_dim)
         # positional embeddings
         self.pos_emb = nn.Embedding(self.context_len, self.emb_dim)
-        # dropout
-        self.dropout = nn.Dropout(self.drop_rate)
         # transformer blocks
         self.transformer_blocks = nn.Sequential(
             *[TransformerBlock(
@@ -45,10 +43,13 @@ class GPTModel(nn.Module):
                 dropout_percent=drop_rate,
             ) for _ in range(self.num_layers)],
         )
-        # final layer norm
-        self.layer_norm = LayerNorm(self.emb_dim)
-        # output layer
-        self.out_head = nn.Linear(self.emb_dim, self.vocab_size, bias=False)
+
+        self.model = nn.Sequential(
+            nn.Dropout(self.drop_rate),
+            self.transformer_blocks,
+            LayerNorm(self.emb_dim),
+            nn.Linear(self.emb_dim, self.vocab_size, bias=False),
+        )
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -59,11 +60,8 @@ class GPTModel(nn.Module):
         tok_embeds = self.tok_emb(x)
         pos_embeds = self.pos_emb(torch.arange(sequence_len))
         x = tok_embeds + pos_embeds
-        x = self.dropout(x)
-        x = self.transformer_blocks(x)
-        x = self.layer_norm(x)
 
-        logits = self.out_head(x)
+        logits = self.model(x)
         return logits
 
 
