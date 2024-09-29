@@ -4,7 +4,11 @@ Let's try some tokenization in this script.
 import tiktoken
 import torch
 
+
 def main():
+    """
+    The main function to try tokenization.
+    """
     tokenizer = tiktoken.get_encoding('gpt2')
 
     text1 = 'Every effort moves you'
