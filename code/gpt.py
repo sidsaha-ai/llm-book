@@ -110,15 +110,18 @@ def generate(num_iterations: int):
 
     for _ in range(num_iterations):
         input_batch = batch[:, -context_len:]
+
         outputs = model(input_batch)
 
         logits = outputs[:, -1, :]
         probs = torch.nn.functional.softmax(logits, dim=-1)
         next_token = torch.argmax(probs, dim=-1, keepdim=True)
+
         batch = torch.cat((input_batch, next_token), dim=1)
-    
+
     res = tokenizer.decode(batch.squeeze(dim=0).tolist())
     print(res)
+
 
 if __name__ == '__main__':
     main()
