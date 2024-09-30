@@ -92,5 +92,35 @@ def main():
     print(f'Size of the model: {size_mb:.2f}MB')
 
 
+def generate(num_iterations: int):
+    """
+    This method takes an input and generates next words for a fixed number of iterations.
+    """
+    context_len: int = 1024
+
+    tokenizer = tiktoken.get_encoding('gpt2')
+    text: str = 'Hello, I am'
+    inputs = tokenizer.encode(text)
+    batch = torch.tensor([inputs])
+
+    model = GPTModel(
+        vocab_size=tokenizer.n_vocab, emb_dim=768, context_len=context_len, drop_rate=0.1, num_layers=12, num_heads=12,
+    )
+    model.eval()
+
+    for _ in range(num_iterations):
+        input_batch = batch[:, -context_len:]
+        outputs = model(input_batch)
+
+        logits = outputs[:, -1, :]
+        probs = torch.nn.functional.softmax(logits, dim=-1)
+        next_token = torch.argmax(probs, dim=-1, keepdim=True)
+        batch = torch.cat((input_batch, next_token), dim=1)
+    
+    res = tokenizer.decode(batch.squeeze(dim=0).tolist())
+    print(res)
+
 if __name__ == '__main__':
     main()
+    print()
+    generate(10)
