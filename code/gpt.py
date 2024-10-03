@@ -91,6 +91,7 @@ def main():
     size_mb = (num_params * 4) / (1024 * 1024)
     print(f'Size of the model: {size_mb:.2f}MB')
 
+
 @torch.no_grad()
 def generate(num_iterations: int):
     """
