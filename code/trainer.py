@@ -20,7 +20,7 @@ class GPTTrainer:
         self.batch_size = batch_size
 
         self.data_loader = DataLoader(
-            self.dataset, self.batch_size, shuffle=True, num_workers=0, drop_last=True,
+            self.dataset, self.batch_size, shuffle=True, num_workers=2, drop_last=True,
         )
 
         self.optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
@@ -111,7 +111,7 @@ def main() -> None:  # pylint: disable=too-many-locals
     trainer = GPTTrainer(model, dataset, batch_size)
 
     # train the model
-    num_epochs: int = 10
+    num_epochs: int = 50
     trainer.train(num_epochs)
 
     # generate from the model
