@@ -58,7 +58,7 @@ class GPTModel(nn.Module):
         _, sequence_len = x.shape
 
         tok_embeds = self.tok_emb(x)
-        pos_embeds = self.pos_emb(torch.arange(sequence_len))
+        pos_embeds = self.pos_emb(torch.arange(sequence_len, device=x.device))
         x = tok_embeds + pos_embeds
 
         logits = self.model(x)

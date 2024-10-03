@@ -24,13 +24,34 @@ class GPTTrainer:
             self.dataset, self.batch_size, shuffle=True, num_workers=0, drop_last=True,
         )
 
-        for inputs, targets in self.data_loader:
-            print(inputs)
-            print(targets)
-            print(f'{inputs.shape=}')
-            print(f'{targets.shape=}')
-            break
+        self.optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
     
+    def train(self, num_epochs: int) -> None:
+        """
+        Trains the model with the dataset.
+        """
+        device = 'mps' if torch.backends.mps.is_available() else 'cpu'
+
+        self.model = self.model.to(device)
+        self.model.train()
+
+        for epoch in range(num_epochs):
+            for ix, (inputs, targets) in enumerate(self.data_loader):
+                inputs = inputs.to(device)
+                targets = targets.to(device)
+
+                self.optimizer.zero_grad()
+
+                logits = self.model(inputs)
+                logits = logits.flatten(0, 1)
+                targets = targets.flatten()
+
+                loss = torch.nn.functional.cross_entropy(logits, targets)
+                print(f'Epoch: {epoch}, Batch Num: {ix}, Loss: {loss.item():.4f}')
+
+                loss.backward()
+                self.optimizer.step()
+                
 
 def main() -> None:
     """
@@ -39,11 +60,11 @@ def main() -> None:
     tokenizer = tiktoken.get_encoding('gpt2')
 
     vocab_size: int = tokenizer.n_vocab
-    emb_dim: int = 4
-    context_len: int = 8
+    emb_dim: int = 768
+    context_len: int = 1024
     drop_rate: float = 0.1
-    num_layers: int = 4
-    num_heads: int = 4
+    num_layers: int = 12
+    num_heads: int = 12
     model = GPTModel(
         vocab_size=vocab_size, emb_dim=emb_dim, context_len=context_len, drop_rate=drop_rate, num_layers=num_layers, num_heads=num_heads,
     )
@@ -54,6 +75,9 @@ def main() -> None:
     dataset = GPTDataset(filepaths, context_len, tokenizer)
 
     trainer = GPTTrainer(model, dataset, batch_size)
+    
+    num_epochs: int = 20
+    trainer.train(num_epochs)
 
 
 if __name__ == '__main__':
