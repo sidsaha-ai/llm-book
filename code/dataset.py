@@ -41,11 +41,11 @@ class GPTDataset(Dataset):
             tokens = self.tokenizer.encode(content)
 
             for ix in range(0, len(tokens) - self.context_len, self.context_len):
-                input = torch.tensor(tokens[ix:ix + self.context_len])
-                target = torch.tensor(tokens[ix + 1:ix + 1 + self.context_len])
+                inputs = torch.tensor(tokens[ix:ix + self.context_len])
+                targets = torch.tensor(tokens[ix + 1:ix + 1 + self.context_len])
 
-                self.input_ids.append(input)
-                self.target_ids.append(target)
+                self.input_ids.append(inputs)
+                self.target_ids.append(targets)
 
     def __len__(self) -> int:
         """
@@ -88,12 +88,13 @@ def main():
     print(f'Dataset length: {len(dataset)}')
 
     inputs, targets = dataset[0]
-    print(inputs)
-    print(targets)
+    print(f'Inputs: {inputs}, Shape: {inputs.shape}')
+    print(f'Targets: {targets}, Shape: {targets.shape}')
 
     inputs, targets = dataset[1]
-    print(inputs)
-    print(targets)
+    print(f'Inputs: {inputs}, Shape: {inputs.shape}')
+    print(f'Targets: {targets}, Shape: {targets.shape}')
+
 
 if __name__ == '__main__':
     main()
