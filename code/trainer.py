@@ -1,13 +1,12 @@
 """
 This contains a class to train the model.
 """
-import torch
 import tiktoken
-
+import torch
 from dataset import GPTDataset, GPTDatasetUtils
 from model import GPTModel
-
 from torch.utils.data import DataLoader
+
 
 class GPTTrainer:
     """

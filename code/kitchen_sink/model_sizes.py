@@ -2,9 +2,8 @@
 This initializes GPT models of various sizes to find the number of parameters and memory size.
 """
 
-from dataclasses import dataclass
-
 from code.model import GPTModel
+from dataclasses import dataclass
 
 
 @dataclass
