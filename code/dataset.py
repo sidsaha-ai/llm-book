@@ -3,8 +3,8 @@ This creates the custom dataset to pretrain the LLM.
 """
 import os
 
-from torch.utils.data import Dataset
 import tiktoken
+from torch.utils.data import Dataset
 
 
 class GPTDataset(Dataset):
