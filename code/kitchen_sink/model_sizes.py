@@ -4,7 +4,7 @@ This initializes GPT models of various sizes to find the number of parameters an
 
 from dataclasses import dataclass
 
-from gpt import GPTModel
+from code.model import GPTModel
 
 
 @dataclass
