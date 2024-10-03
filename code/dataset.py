@@ -21,7 +21,7 @@ class GPTDataset(Dataset):
         self.target_ids = []
 
         self._build()
-    
+
     def _read_file(self, filepath: str) -> str:
         """
         Read and return the contents of the file.
@@ -30,7 +30,7 @@ class GPTDataset(Dataset):
         with open(filepath, 'r', encoding='utf-8') as f:
             content = f.read()
         return content
-    
+
     def _build(self) -> None:
         """
         This function builds the dataset.
@@ -52,7 +52,7 @@ class GPTDataset(Dataset):
         Returns the length of the dataset.
         """
         return len(self.input_ids)
-    
+
     def __getitem__(self, ix: int) -> tuple[torch.Tensor, torch.Tensor]:
         """
         Returns the input and target tensor for a given index.
@@ -74,7 +74,7 @@ def _read_input_filepaths() -> list[str]:
             continue
         filepaths.append(os.path.join(data_dir, f))
     return filepaths
-        
+
 
 def main():
     """
@@ -86,7 +86,7 @@ def main():
 
     dataset = GPTDataset(filepaths, context_len, tokenizer)
     print(f'Dataset length: {len(dataset)}')
-    
+
     inputs, targets = dataset[0]
     print(inputs)
     print(targets)
