@@ -60,27 +60,29 @@ class GPTDataset(Dataset):
         return self.input_ids[ix], self.target_ids[ix]
 
 
-def _read_input_filepaths() -> list[str]:
-    """
-    Reads the filepaths for all the input files.
-    """
-    filepaths: list[str] = []
-    data_dir: str = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        'data'
-    )
-    for f in os.listdir(data_dir):
-        if '.txt' not in f:
-            continue
-        filepaths.append(os.path.join(data_dir, f))
-    return filepaths
+class GPTDatasetUtils:
+
+    @staticmethod
+    def input_filepaths() -> list[str]:
+        """
+        Reads and returns the filepaths.
+        """
+        filepaths: list[str] = []
+        data_dir: str = os.path.join(
+            os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+            'data',
+        )
+        for f in os.listdir(data_dir):
+            if '.txt' in f:
+                filepaths.append(os.path.join(data_dir, f))
+        return filepaths
 
 
 def main():
     """
     Main function to test the dataset.
     """
-    filepaths: list[str] = _read_input_filepaths()
+    filepaths: list[str] = GPTDatasetUtils.input_filepaths()
     tokenizer = tiktoken.get_encoding('gpt2')
     context_len: int = 4
 
