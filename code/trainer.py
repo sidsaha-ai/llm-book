@@ -24,7 +24,7 @@ class GPTTrainer:
         )
 
         self.optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
-    
+
     def train(self, num_epochs: int) -> None:
         """
         Trains the model with the dataset.
@@ -50,9 +50,44 @@ class GPTTrainer:
 
                 loss.backward()
                 self.optimizer.step()
-                
 
-def main() -> None:
+
+@torch.no_grad()
+def generate(prompt: str, model: GPTModel, num_tokens: int, tokenizer) -> str:
+    """
+    This generates a text given the prompt.
+    """
+    tokens = tokenizer.encode(prompt)
+
+    model.to('cpu')
+    model.eval()
+
+    for ix in range(num_tokens):
+        if ix % 10 == 0:
+            print(f'Generating token #{ix}...')
+        input_tokens = tokens[-model.context_len:]
+        batch = torch.tensor([input_tokens])
+
+        logits = model(batch)
+        logits = logits[:, -1, :]  # logits for the predicted token
+        logits = logits[-1]  # the last dimension
+
+        # let's do top-K sampling
+        k: int = 50
+        top_logits, _ = torch.topk(logits, k)
+        logits = torch.where(
+            condition=logits < top_logits[-1], input=torch.tensor(float('-inf')), other=logits,
+        )
+        probs = torch.nn.functional.softmax(logits, dim=-1)
+        next_token = torch.multinomial(probs, num_samples=1).item()
+
+        tokens.append(next_token)
+
+    res = tokenizer.decode(tokens)
+    return res
+
+
+def main() -> None:  # pylint: disable=too-many-locals
     """
     The main function that trains the GPT model.
     """
@@ -74,9 +109,16 @@ def main() -> None:
     dataset = GPTDataset(filepaths, context_len, tokenizer)
 
     trainer = GPTTrainer(model, dataset, batch_size)
-    
-    num_epochs: int = 20
+
+    # train the model
+    num_epochs: int = 10
     trainer.train(num_epochs)
+
+    # generate from the model
+    prompt = 'This is a story of Alex, the lion, and'
+    num_tokens: int = 50
+    res = generate(prompt, model, num_tokens, tokenizer)
+    print(res)
 
 
 if __name__ == '__main__':

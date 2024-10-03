@@ -61,6 +61,9 @@ class GPTDataset(Dataset):
 
 
 class GPTDatasetUtils:
+    """
+    Utility function to get the input data filepaths.
+    """
 
     @staticmethod
     def input_filepaths() -> list[str]:
