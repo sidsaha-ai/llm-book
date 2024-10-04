@@ -20,10 +20,10 @@ class GPTTrainer:
         self.batch_size = batch_size
 
         self.data_loader = DataLoader(
-            self.dataset, self.batch_size, shuffle=True, num_workers=2, drop_last=True,
+            self.dataset, self.batch_size, shuffle=True, num_workers=4, drop_last=True,
         )
 
-        self.optimizer = torch.optim.AdamW(model.parameters(), lr=1e-4)
+        self.optimizer = torch.optim.AdamW(model.parameters(), lr=1e-6)
 
     def train(self, num_epochs: int) -> None:
         """
@@ -46,7 +46,7 @@ class GPTTrainer:
                 targets = targets.flatten()
 
                 loss = torch.nn.functional.cross_entropy(logits, targets)
-                print(f'Epoch: {epoch}, Batch Num: {ix}, Loss: {loss.item():.4f}')
+                print(f'Epoch: {epoch}, Batch Num: {ix}, Loss: {loss}')
 
                 loss.backward()
                 self.optimizer.step()
@@ -106,17 +106,19 @@ def main() -> None:  # pylint: disable=too-many-locals
     batch_size: int = 2
 
     filepaths: list[str] = GPTDatasetUtils.input_filepaths()
+    print(f'Num filepaths: {filepaths}')
     dataset = GPTDataset(filepaths, context_len, tokenizer)
+    print(f'Dataset length: {len(dataset)}')
 
     trainer = GPTTrainer(model, dataset, batch_size)
 
     # train the model
-    num_epochs: int = 50
+    num_epochs: int = 20
     trainer.train(num_epochs)
 
     # generate from the model
     prompt = 'This is a story of Alex, the lion, and'
-    num_tokens: int = 50
+    num_tokens: int = 200
     res = generate(prompt, model, num_tokens, tokenizer)
     print(res)
 
