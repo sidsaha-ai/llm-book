@@ -1,3 +1,6 @@
+"""
+This script reads the pickle file of books and creates the txt files for training.
+"""
 import os
 import pickle
 from pathlib import Path
@@ -20,7 +23,7 @@ def main():
             os.path.join(Path(__file__).resolve().parents[2], 'data'),
             f'{os.path.splitext(filename)[0]}.txt',
         )
-        with open(target_file, 'w') as f:
+        with open(target_file, 'w', encoding='utf-8') as f:
             f.write(book)
         print(f'Wrote to file: {target_file}')
 
