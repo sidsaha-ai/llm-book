@@ -11,7 +11,7 @@ scikit-learn
 matplotlib
 pytest
 tqdm
-gutenbergpy
 tokenizers
 transformers
 tiktoken
+nltk

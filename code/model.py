@@ -58,7 +58,7 @@ class GPTModel(nn.Module):
         _, sequence_len = x.shape
 
         tok_embeds = self.tok_emb(x)
-        pos_embeds = self.pos_emb(torch.arange(sequence_len))
+        pos_embeds = self.pos_emb(torch.arange(sequence_len, device=x.device))
         x = tok_embeds + pos_embeds
 
         logits = self.model(x)
@@ -92,6 +92,7 @@ def main():
     print(f'Size of the model: {size_mb:.2f}MB')
 
 
+@torch.no_grad()
 def generate(num_iterations: int):
     """
     This method takes an input and generates next words for a fixed number of iterations.
